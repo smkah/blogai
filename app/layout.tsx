@@ -39,7 +39,6 @@ export default function RootLayout({
                   <div className="flex gap-5 items-center font-semibold">
                     <Link href={"/"}>Blog Ai</Link>
                   </div>
-                  {/* @ts-expect-error Server Component */}
                   {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
                 </div>
               </nav>
