@@ -1,11 +1,11 @@
-import { signOutAction } from "@/app/actions";
+import { signOutAction } from "@/app/actions/users";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
 
-export default async function AuthButton() {
+export default async function HeaderAuth() {
   const supabase = await createClient();
 
   const {
@@ -51,7 +51,7 @@ export default async function AuthButton() {
   return user ? (
     <div className="flex items-center gap-4">
       Hey, {user.email}!
-      <form action={signOutAction}>
+      <form action={signOutAction as any}>
         <Button type="submit" variant={"outline"}>
           Sign out
         </Button>

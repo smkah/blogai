@@ -1,4 +1,4 @@
-import { signUpAction } from "@/app/actions";
+import { signUpAction } from "@/app/actions/users";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
@@ -39,7 +39,10 @@ export default async function Signup(props: {
             minLength={6}
             required
           />
-          <SubmitButton formAction={signUpAction} pendingText="Signing up...">
+          <SubmitButton
+            formAction={signUpAction as any}
+            pendingText="Signing up..."
+          >
             Sign up
           </SubmitButton>
           <FormMessage message={searchParams} />
