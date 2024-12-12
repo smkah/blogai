@@ -15,6 +15,7 @@ export default function Index() {
       const posts = await list();
       setPosts(posts);
     })();
+    console.log(process.env.VERCEL_URL);
   }, []);
 
   useEffect(() => {

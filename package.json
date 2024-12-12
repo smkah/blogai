@@ -4,6 +4,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "lint": "next lint",
     "update": "npx npm-check-updates -i"
   },
   "dependencies": {
