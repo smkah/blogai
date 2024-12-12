@@ -5,6 +5,7 @@ import { create, list } from "./actions/posts";
 import { PostCard } from "@/components/ui/custom/post-card";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/client";
+import Link from "next/link";
 
 export default function Index() {
   const [posts, setPosts] = useState<any>([]);
@@ -15,7 +16,6 @@ export default function Index() {
       const posts = await list();
       setPosts(posts);
     })();
-    console.log(process.env.NEXT_PUBLIC_VERCEL_URL);
   }, []);
 
   useEffect(() => {
@@ -44,12 +44,15 @@ export default function Index() {
         </div>
 
         {user && (
-          <div className="flex flex-col gap-2">
-            <form action={create as any}>
-              <Button>Criar post by IA</Button>
-            </form>
-          </div>
+          <Link href="/dashboard/create">
+            <Button>Criar post by IA</Button>
+          </Link>
         )}
+        <p className="text-sm text-muted-foreground text-center max-w-2xl mt-4 bg-muted p-2 rounded-md">
+          Aviso: Todos os posts e imagens são gerados usando o modelo de IA. O
+          conteúdo pode conter imprecisões ou erros. Use as informações com
+          discernimento.
+        </p>
       </main>
     </>
   );

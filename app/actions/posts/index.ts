@@ -4,17 +4,16 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
 export async function list() {
-  const supabase = await createClient();
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/posts`,
+    {
+      method: "GET",
+    }
+  );
 
-  try {
-    const { data, error } = await supabase
-      .from("posts")
-      .select("*")
-      .order("created_at", { ascending: false });
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
+  const { data } = await response.json();
+
+  return data;
 }
 
 export async function create() {
@@ -28,10 +27,13 @@ export async function create() {
     console.error("Auth error:", error);
   }
 
-  const response = await fetch("http://localhost:3000/api/posts/", {
-    method: "POST",
-    body: JSON.stringify({ userId: user?.id }),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/posts/`,
+    {
+      method: "POST",
+      body: JSON.stringify({ userId: user?.id }),
+    }
+  );
 
   revalidatePath("/");
 
@@ -39,9 +41,12 @@ export async function create() {
 }
 
 export async function get(slug: string) {
-  const response = await fetch(`http://localhost:3000/api/posts/${slug}`, {
-    method: "GET",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/posts/${slug}`,
+    {
+      method: "GET",
+    }
+  );
 
   const data = await response.json();
 
