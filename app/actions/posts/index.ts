@@ -3,13 +3,16 @@
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
+const API_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000/api"
+    : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
+console.log(API_URL);
+
 export async function list() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/posts`,
-    {
-      method: "GET",
-    }
-  );
+  const response = await fetch(`${API_URL}/posts`, {
+    method: "GET",
+  });
 
   const { data } = await response.json();
 
@@ -27,13 +30,10 @@ export async function create() {
     console.error("Auth error:", error);
   }
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/posts/`,
-    {
-      method: "POST",
-      body: JSON.stringify({ userId: user?.id }),
-    }
-  );
+  const response = await fetch(`${API_URL}/posts/`, {
+    method: "POST",
+    body: JSON.stringify({ userId: user?.id }),
+  });
 
   revalidatePath("/");
 
@@ -41,12 +41,9 @@ export async function create() {
 }
 
 export async function get(slug: string) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/posts/${slug}`,
-    {
-      method: "GET",
-    }
-  );
+  const response = await fetch(`${API_URL}/posts/${slug}`, {
+    method: "GET",
+  });
 
   const data = await response.json();
 
