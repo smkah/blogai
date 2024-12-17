@@ -1,4 +1,4 @@
-import { create } from "@/app/actions/posts";
+import { createPost } from "@/app/actions/posts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,7 +11,7 @@ export default function CreatePost() {
     <div className="container max-w-4xl py-4 space-y-4">
       <h1 className="text-2xl font-bold">Criar novo post</h1>
       <div className="flex flex-col gap-2">
-        <form action={create as any}>
+        <form action={createPost as any}>
           <Button>Criar post by IA</Button>
         </form>
       </div>
@@ -20,7 +20,7 @@ export default function CreatePost() {
           <CardTitle>Create New Blog Post</CardTitle>
         </CardHeader>
         <CardContent>
-          <form action={create as any} className="space-y-6">
+          <form action={createPost as any} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="title">Title</Label>
               <Input

@@ -28,30 +28,22 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   return (
     <Link href={`/b/${post.slug}`}>
-      <Card className="overflow-hidden group hover:border-primary/20 transition-colors">
-        {post.coverImage && (
-          <div className="relative w-full h-48">
-            <p className="absolute right-0 -bottom-6 text text-xs p-2 italic">
-              Art by Pollinations.ai
-            </p>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: post.coverImage,
-              }}
-            />
-            {/* <Image
-              src={post.coverImage}
-              alt={post.title}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            /> */}
-          </div>
+      <Card className="overflow-hidden group hover:shadow-lg transition-all w-full max-w-[768px] mx-auto">
+        {post.coverImage ? (
+          <img
+            src={post.coverImage}
+            alt={post.title}
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            loading="eager"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200 animate-pulse"></div>
         )}
 
-        <CardHeader className="space-y-2">
+        <CardHeader className="space-y-2 p-4 sm:p-6">
           <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8">
+            <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
               {post.author?.image ? (
                 <AvatarImage src={post.author.image} alt={post.author.name} />
               ) : (
@@ -61,25 +53,33 @@ export function PostCard({ post }: PostCardProps) {
               )}
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-sm font-medium">{post.author?.name}</span>
-              <span className="text-xs text-muted-foreground ">
+              <span className="text-sm sm:text-base font-medium">
+                {post.author?.name}
+              </span>
+              <span className="text-xs sm:text-sm text-muted-foreground">
                 {formatDate(post.created_at.toString())}
               </span>
             </div>
           </div>
-          <h3 className="text-xl font-bold leading-tight group-hover:text-primary transition-colors">
+          <h3 className="text-lg sm:text-xl md:text-2xl font-bold leading-tight group-hover:text-primary transition-colors">
             {post.title}
           </h3>
         </CardHeader>
 
-        <CardContent>
-          <p className="text-muted-foreground line-clamp-2">{post.excerpt}</p>
+        <CardContent className="p-4 sm:p-6">
+          <p className="text-sm sm:text-base text-muted-foreground line-clamp-2">
+            {post.excerpt}
+          </p>
         </CardContent>
 
         {post.tags && post.tags.length > 0 && (
-          <CardFooter className="flex gap-2 flex-wrap">
+          <CardFooter className="flex gap-2 flex-wrap p-4 sm:p-6">
             {post.tags.map((tag) => (
-              <Badge key={tag} variant="secondary">
+              <Badge
+                key={tag}
+                variant="secondary"
+                className="text-xs sm:text-sm"
+              >
                 {tag}
               </Badge>
             ))}

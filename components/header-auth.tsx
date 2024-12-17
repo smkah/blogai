@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
+import { LayoutDashboard, LogOut } from "lucide-react";
 
 export default async function HeaderAuth() {
   const supabase = await createClient();
@@ -51,9 +52,14 @@ export default async function HeaderAuth() {
   return user ? (
     <div className="flex items-center gap-4">
       Hey, {user.email}!
+      <Button variant={"outline"}>
+        <Link href="/dashboard">
+          <LayoutDashboard className="w-4 h-4" />
+        </Link>
+      </Button>
       <form action={signOutAction as any}>
         <Button type="submit" variant={"outline"}>
-          Sign out
+          <LogOut className="w-4 h-4" />
         </Button>
       </form>
     </div>

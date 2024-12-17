@@ -1,4 +1,3 @@
-import DeployButton from "@/components/deploy-button";
 import { EnvVarWarning } from "@/components/env-var-warning";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
@@ -14,8 +13,9 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "Blog AI",
+  description:
+    "Blog AI é uma plataforma que utiliza inteligência artificial para gerar conteúdo relevante sobre o assunto de sua escolha. Fique por dentro das últimas tendências e novidades.",
 };
 
 export default function RootLayout({

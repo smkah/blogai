@@ -1,53 +1,58 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { create, list } from "./actions/posts";
+import InfiniteScroll from "@/components/infinite-scroll";
+import { listPosts } from "./actions/posts";
 import { PostCard } from "@/components/ui/custom/post-card";
-import { Button } from "@/components/ui/button";
-import { createClient } from "@/utils/supabase/client";
-import Link from "next/link";
-
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { PER_PAGE, subject } from "@/constants";
 export default function Index() {
   const [posts, setPosts] = useState<any>([]);
-  const [user, setUser] = useState<any>(null);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      const posts = await list();
-      setPosts(posts);
-    })();
-  }, []);
+  const next = async () => {
+    setIsLoading(true);
 
-  useEffect(() => {
-    (async () => {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      setUser(user);
-    })();
-  }, []);
+    setTimeout(async () => {
+      const posts = await listPosts(page);
+      if (posts.length > 0) {
+        setPosts((prev: any) => [...prev, ...posts]);
+        setPage((prev) => prev + 1);
+        setIsLoading(false);
+      } else {
+        setHasMore(false);
+      }
+    }, 100);
+  };
 
   return (
     <>
       <main className="flex-1 flex flex-col gap-4 px-4 items-center">
         <h2 className="font-medium text-2xl">Blog Ai</h2>
-        <h2 className="font-medium text-md mb-4">
-          Confira as noticias mais relevantes sobre o mundo da tecnologia e da
-          inovação
-        </h2>
+        <p className="font-medium text-md mb-4">
+          Confira as noticias mais relevantes sobre o mundo da{" "}
+          <b className="text-primary">{subject}</b>
+        </p>
 
-        <div className="flex flex-col gap-2">
+        <h3 className="mt-4 text-xl font-medium">Últimas do blog</h3>
+
+        <div className="flex flex-col gap-10 justify-center items-center">
           {posts.length > 0 &&
-            posts.map((post: any) => <PostCard key={post.id} post={post} />)}
+            posts.map((post: any, key: any) => (
+              <PostCard key={key} post={post} />
+            ))}
+          <InfiniteScroll
+            hasMore={hasMore}
+            isLoading={isLoading}
+            next={next}
+            threshold={1}
+          >
+            {hasMore && <Loader2 className="my-4 h-8 w-8 animate-spin" />}
+          </InfiniteScroll>
         </div>
 
-        {user && (
-          <Link href="/dashboard/create">
-            <Button>Criar post by IA</Button>
-          </Link>
-        )}
         <p className="text-sm text-muted-foreground text-center max-w-2xl mt-4 bg-muted p-2 rounded-md">
           Aviso: Todos os posts e imagens são gerados usando o modelo de IA. O
           conteúdo pode conter imprecisões ou erros. Use as informações com

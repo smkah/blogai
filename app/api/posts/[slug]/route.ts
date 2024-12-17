@@ -19,3 +19,19 @@ export async function GET(
 
   return Response.json({ data });
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const supabase = await createClient();
+  const id = (await params).slug;
+
+  const { data, error } = await supabase.from("posts").delete().eq("id", id);
+
+  if (error) {
+    return Response.json({ error: error.message });
+  }
+
+  return Response.json({ data });
+}
