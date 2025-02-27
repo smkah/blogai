@@ -1,5 +1,4 @@
 import { EnvVarWarning } from "@/components/env-var-warning";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";
@@ -13,7 +12,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Blog AI",
+  title: "Blog AI | Seu blog de notícias gerado por IA",
   description:
     "Blog AI é uma plataforma que utiliza inteligência artificial para gerar conteúdo relevante sobre o assunto de sua escolha. Fique por dentro das últimas tendências e novidades.",
 };
@@ -48,17 +47,8 @@ export default function RootLayout({
 
               <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
                 <p>
-                  Powered by{" "}
-                  <a
-                    href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-                    target="_blank"
-                    className="font-bold hover:underline"
-                    rel="noreferrer"
-                  >
-                    Blog Ai
-                  </a>
+                  Powered by <b className="font-bold">Blog Ai</b>
                 </p>
-                <ThemeSwitcher />
               </footer>
             </div>
           </main>

@@ -4,7 +4,8 @@ import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
-import { LayoutDashboard, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
+import { ThemeSwitcher } from "./theme-switcher";
 
 export default async function HeaderAuth() {
   const supabase = await createClient();
@@ -50,18 +51,17 @@ export default async function HeaderAuth() {
     );
   }
   return user ? (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-2">
       Hey, {user.email}!
-      <Button variant={"outline"}>
-        <Link href="/dashboard">
-          <LayoutDashboard className="w-4 h-4" />
-        </Link>
+      <Button variant={"outline"} size="sm">
+        <Link href="/dashboard">Dashboard</Link>
       </Button>
       <form action={signOutAction as any}>
-        <Button type="submit" variant={"outline"}>
+        <Button type="submit" variant={"outline"} size="sm">
           <LogOut className="w-4 h-4" />
         </Button>
       </form>
+      <ThemeSwitcher />
     </div>
   ) : (
     <div className="flex gap-2">

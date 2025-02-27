@@ -6,20 +6,65 @@ export async function GET(request: Request) {
   const supabase = await createClient();
 
   const { searchParams } = new URL(request.url);
-  const page = searchParams.get("page");
+  const limit = searchParams.get("limit");
+  // let tags = searchParams.get("tags");
 
-  if (!page) {
-    return new Response(JSON.stringify({ error: "Page is required" }));
+  if (!limit) {
+    return new Response(JSON.stringify({ error: "Limit is required" }));
   }
 
-  const start = (+page - 1) * PER_PAGE;
-  const end = +page * PER_PAGE - 1;
+  // const t = await supabase.from("posts").select("*");
 
-  const { data, error } = await supabase
+  // const asd = t.data
+  //   ?.map((p: any) => {
+  //     return { tags: p.tags, postId: p.id };
+  //   })
+  //   .flat()
+  //   .map(({ tags, postId }) => {
+  //     return {
+  //       postId,
+  //       tags: tags.map((tag: string) =>
+  //         tag
+  //           .toLowerCase()
+  //           .normalize("NFD")
+  //           .replace(/[\u0300-\u036f]/g, "")
+  //           .replace(/-/g, " ")
+  //       ),
+  //     };
+  //   });
+
+  // let posts_tags = [];
+
+  // for await (const tag of asd!) {
+  //   const { data, error } = await supabase
+  //     .from("tags")
+  //     .select("id")
+  //     .eq("name", tag.tags);
+
+  //   posts_tags.push({ postId: tag.postId, tags: data });
+  // }
+
+  // console.log(posts_tags);
+
+  // const start = (+page - 1) * PER_PAGE;
+  // const end = +page * PER_PAGE - 1;
+
+  // const tagsArray =
+  //   tags !== "undefined" ? (Array.isArray(tags) ? tags : [tags]) : [];
+
+  let query = supabase
     .from("posts")
     .select("*")
     .order("created_at", { ascending: false })
-    .range(start, end);
+    .limit(Number(limit));
+
+  // query = query.in("tags", ["2024"]);
+
+  // if (tags !== "undefined") {
+  //   query = query.contains("tags", JSON.parse(tags!));
+  // }
+
+  const { data, error } = await query;
 
   if (error) {
     return new Response(JSON.stringify({ error: error.message }));
@@ -31,6 +76,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const supabase = await createClient();
   const { userId } = await request.json();
+
   const { data } = await supabase.from("posts").select("*");
   const posts = data?.map((post) => post.title);
 
@@ -91,7 +137,7 @@ export async function POST(request: Request) {
     - Explicar conceitos tecnológicos complexos de forma clara e acessível
     - Destacar tendências e inovações emergentes
     - Fornecer insights práticos para profissionais e entusiastas de tecnologia
-    - Fornecer um conteúdo únicos, nunca visto antes nos seguintes assuntos: ${posts?.join(", ")};
+    - Fornecer um conteúdo únicos, nunca visto antes, e não abordando nos seguintes assuntos: ${posts?.join(", ")};
 
     # Diretrizes para Criação de Posts
     1. Estrutura do conteúdo do Post:
